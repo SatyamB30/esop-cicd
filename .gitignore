@@ -13,7 +13,11 @@ out/
 .settings
 .classpath
 .factorypath
-terraform/.terraform
-terraform/.terraform.lock.hcl
-terraform/terraform.tfstate
-terraform/terraform.tfstate.backup
+terraform/ec2instance/.terraform
+terraform/ec2instance/.terraform.lock.hcl
+terraform/ec2instance/terraform.tfstate
+terraform/ec2instance/terraform.tfstate.backup
+terraform/s3bucket/.terraform
+terraform/s3bucket/.terraform.lock.hcl
+terraform/s3bucket/terraform.tfstate.backup
+terraform/s3bucket/terraform.tfstate

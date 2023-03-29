@@ -1,4 +1,13 @@
 # Provider - export AWS_accesskey and secret key. region frow aws region
+terraform {
+  backend "s3" {
+    bucket = "satyam-s3-bucket"
+    key    = "terraform.tfstate"
+    region = "us-east-1"
+    encrypt = true
+  }
+}
+
 provider "aws" {
   region = "us-east-1"
 }
