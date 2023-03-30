@@ -1,0 +1,103 @@
+name: test-build-deploy
+
+on:
+  push:
+    branch: "main"
+  pull_request:
+    branch: "main"
+
+  workflow_call:
+    secrets:
+      EC2_SSH_KEY:
+        required: true
+      AWS_ACCESS_KEY:
+        required: true
+      AWS_SECRET_ACCESS_KEY:
+        required: true
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: main
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: corretto
+          java-version: 17
+      - name: Test
+        run: ./gradlew test
+
+  build:
+    needs: "test"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: main
+      - name: Setup java
+        uses: actions/setup-java@v3
+        with:
+          distribution: corretto
+          java-version: 17
+      - name: Build
+        run: ./gradlew build
+      - name: Copy jar to artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: esop-trading-1.0
+          path: build/libs/esop-0.1-all.jar
+
+  deploy:
+    needs: ["build"]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v3
+        with:
+          ref:
+            main
+      - name: Setup java
+        uses: actions/setup-java@3
+        with:
+          distribution: corretto
+          java-version: 17
+      - name: Download jar file
+        uses: actions/download-artifact@v3
+        with:
+          name: esop-trading-1.0
+      - name: Download public_ip file
+        run: |
+          aws s3 cp s3://
+          cat public_ip.txt
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: 'us-east-1'
+      - name: Copy jar on ec2 instance
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.EC@_SSH_KEY }}
+        run: | 
+          eval 'ssh-agent'
+          echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+          ssh_host=$(cat public_ip.txt | tr -d '"');
+          scp -o StrictHostKeyChecking=no "esop-0.1-all.jar" ec2-user@$ssh_host:~
+          ssh -o StrictHostKeyChecking=no ec2-user@$ssh_host -t 'sudo yum install java-17-amazon-corretto-headless -y;
+          ssh-keyscan $ssh_host >> ~/.ssh/known_hosts;
+          pid=$(sudo fuser -v -n tcp 8080);
+          #!/bin/sh;
+          if [ $pid ]
+            then
+            sudo fuser -k -n tcp 8080  
+          fi
+          sudo nohup java -jar esop-0.1-all.jar >/dev/null;'
+        
+            
+
+
