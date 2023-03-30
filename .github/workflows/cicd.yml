@@ -74,7 +74,7 @@ jobs:
           name: esop-trading-1.0
       - name: Download public_ip file
         run: |
-          aws s3 cp s3://satyam-s3-bucket
+          aws s3 cp s3://satyam-s3-bucket/public_ip.txt public_ip.txt
           cat public_ip.txt
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
