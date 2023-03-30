@@ -82,7 +82,7 @@ jobs:
           AWS_DEFAULT_REGION: 'us-east-1'
       - name: Copy jar on ec2 instance
         env:
-          SSH_PRIVATE_KEY: ${{ secrets.EC@_SSH_KEY }}
+          SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
         run: | 
           eval 'ssh-agent'
           echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
