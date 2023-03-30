@@ -92,6 +92,7 @@ jobs:
           ssh-keyscan $ssh_host >> ~/.ssh/known_hosts;
           pid=$(sudo fuser -v -n tcp 8080);
           #!/bin/sh;
+          
           if [ $pid ]
             then
             sudo fuser -k -n tcp 8080  
