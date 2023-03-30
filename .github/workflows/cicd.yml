@@ -84,7 +84,7 @@ jobs:
         env:
           SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
         run: | 
-          eval 'ssh-agent'
+          eval `ssh-agent`
           echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
           ssh_host=$(cat public_ip.txt | tr -d '"');
           echo ssh_host
