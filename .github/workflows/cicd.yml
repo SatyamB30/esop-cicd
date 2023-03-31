@@ -93,9 +93,10 @@ jobs:
           echo "Hello world 1"
           ssh-keyscan $ssh_host >> ~/.ssh/known_hosts;
           echo "hello there 2"
-          pid=$(sudo lsof -n -i :8080 | awk 'NR==2{print $2}')
-          echo "$pid"
+          
           #!/bin/sh
+          pid=$(sudo lsof -n -i :8080)
+          echo "$pid"
           if [ $pid ]
             then
             sudo kill -9 $(sudo lsof -t -i:8080)
