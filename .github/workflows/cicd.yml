@@ -90,7 +90,9 @@ jobs:
           echo "$ssh_host"
           scp -o StrictHostKeyChecking=no "esop-0.1-all.jar" ec2-user@$ssh_host:~
           ssh -o StrictHostKeyChecking=no ec2-user@$ssh_host -t 'sudo yum install java-17-amazon-corretto-headless -y;
+          echo "Hello world 1"
           ssh-keyscan $ssh_host >> ~/.ssh/known_hosts;
+          echo "hello there 2"
           pid= $(sudo lsof -n -i :8080);
           #!/bin/sh;
           if [ $pid ]
