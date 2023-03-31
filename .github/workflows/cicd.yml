@@ -93,9 +93,8 @@ jobs:
           echo "Hello world 1"
           ssh-keyscan $ssh_host >> ~/.ssh/known_hosts;
           echo "hello there 2"
-          pid= $(sudo lsof -n -i :8080);
-          echo "pid"
-          #!/bin/sh;
+          pid = $(sudo lsof -n -i :8080)
+          #!/bin/sh
           if [ $pid ]
             then
             sudo fuser -k -n tcp 8080  
