@@ -97,7 +97,7 @@ jobs:
           then
           sudo kill -9 "$pid"
           fi
-          sudo nohup java -jar esop-0.1-all.jar >/dev/null &
+          sudo nohup java -jar esop-0.1-all.jar >/dev/null &'
         
             
 
